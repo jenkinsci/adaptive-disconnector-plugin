@@ -27,7 +27,7 @@ import hudson.model.Computer;
 import hudson.node_monitors.AbstractNodeMonitorDescriptor;
 import hudson.node_monitors.NodeMonitor;
 
-public class Updater {
+/*package*/ class Updater {
 
     /*package*/ static void trigger(AbstractNodeMonitorDescriptor<NodeMonitor> descriptor, NodeMonitor monitor, Computer computer) {
 

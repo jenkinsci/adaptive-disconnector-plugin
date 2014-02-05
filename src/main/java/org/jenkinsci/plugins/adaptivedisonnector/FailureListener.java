@@ -32,7 +32,9 @@ import hudson.model.Run;
 import hudson.model.listeners.RunListener;
 import hudson.node_monitors.AbstractNodeMonitorDescriptor;
 import hudson.node_monitors.NodeMonitor;
+import hudson.remoting.Callable;
 
+import java.io.IOException;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -60,9 +62,32 @@ public class FailureListener extends RunListener<Run<?, ?>> {
         }
 
         if (computer.isOffline()) {
-            LOGGER.log(Level.WARNING, "{0} taken offline after failed run of {1}",
-                    new String[] {computer.getName(), r.getFullDisplayName()}
+            final String message = String.format(
+                    "%s taken offline after failed run of %s",
+                    computer.getName(), r.getFullDisplayName()
             );
+
+            LOGGER.log(Level.WARNING, message);
+
+            try {
+                computer.getChannel().call(new LogToSlave(message));
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    private static class LogToSlave implements Callable<Void, IOException> {
+        private static final long serialVersionUID = 1L;
+        private String message;
+        public LogToSlave(String message) {
+            this.message = message;
+        }
+        public Void call() throws IOException {
+            LOGGER.log(Level.WARNING, message);
+            return null;
         }
     }
 }
