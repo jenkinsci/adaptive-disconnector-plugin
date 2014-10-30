@@ -8,7 +8,7 @@
 
   <groupId>org.jenkins-ci.plugins</groupId>
   <artifactId>adaptive-disconnector</artifactId>
-  <version>0.2</version>
+  <version>0.3-SNAPSHOT</version>
   <packaging>hpi</packaging>
   <name>Adaptive Disconnector Plugin</name>
   <description>Run node monitors after build failure to detect infrastructure problems early</description>
@@ -26,7 +26,7 @@
     <connection>scm:git:git://github.com/jenkinsci/adaptive-disconnector-plugin.git</connection>
     <developerConnection>scm:git:git@github.com:jenkinsci/adaptive-disconnector-plugin.git</developerConnection>
     <url>https://github.com/jenkinsci/adaptive-disconnector-plugin</url>
-    <tag>adaptive-disconnector-0.2</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <dependencies>
