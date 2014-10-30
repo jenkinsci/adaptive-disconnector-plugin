@@ -33,6 +33,7 @@ import hudson.model.listeners.RunListener;
 import hudson.node_monitors.AbstractNodeMonitorDescriptor;
 import hudson.node_monitors.NodeMonitor;
 import hudson.remoting.Callable;
+import hudson.remoting.VirtualChannel;
 
 import java.io.IOException;
 import java.util.Map.Entry;
@@ -54,8 +55,6 @@ public class FailureListener extends RunListener<Run<?, ?>> {
                 new String[] {computer.getName(), r.getFullDisplayName()}
         );
 
-        assert computer.isOnline();
-
         for (Entry<Descriptor<NodeMonitor>, NodeMonitor> pair: ComputerSet.getNonIgnoredMonitors().entrySet()) {
             AbstractNodeMonitorDescriptor<NodeMonitor> descriptor = (AbstractNodeMonitorDescriptor<NodeMonitor>) pair.getKey();
             Updater.trigger(descriptor, pair.getValue(), computer);
@@ -70,7 +69,11 @@ public class FailureListener extends RunListener<Run<?, ?>> {
             LOGGER.log(Level.WARNING, message);
 
             try {
-                computer.getChannel().call(new LogToSlave(message));
+                final VirtualChannel channel = computer.getChannel();
+                // Channel might not be available if slave crashed causing build to fail
+                if (channel == null) return;
+
+                channel.call(new LogToSlave(message));
             } catch (IOException ex) {
                 ex.printStackTrace();
             } catch (InterruptedException ex) {
