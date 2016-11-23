@@ -75,7 +75,7 @@ public class FailureListenerTest {
         FreeStyleBuild build = project.scheduleBuild2(0).get();
         j.assertBuildStatus(Result.FAILURE, build);
 
-        Thread.sleep(10000);
+        Thread.sleep(1000);
 
         assertTrue(slave.getComputer().isOffline());
     }
