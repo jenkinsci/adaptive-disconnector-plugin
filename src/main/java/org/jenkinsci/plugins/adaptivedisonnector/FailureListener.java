@@ -51,6 +51,10 @@ public class FailureListener extends RunListener<Run<?, ?>> {
         if (!Result.FAILURE.equals(r.getResult())) return;
 
         Computer computer = Computer.currentComputer();
+        if (computer == null) {
+            LOGGER.info("Unable to detect computer for " + r);
+            return;
+        }
 
         LOGGER.log(Level.INFO, "Monitoring {0} after failed run of {1}",
                 new String[] {computer.getName(), r.getFullDisplayName()}
