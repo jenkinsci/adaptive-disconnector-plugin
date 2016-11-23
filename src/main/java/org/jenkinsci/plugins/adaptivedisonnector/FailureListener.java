@@ -34,6 +34,7 @@ import hudson.node_monitors.AbstractNodeMonitorDescriptor;
 import hudson.node_monitors.NodeMonitor;
 import hudson.remoting.Callable;
 import hudson.remoting.VirtualChannel;
+import jenkins.security.MasterToSlaveCallable;
 
 import java.io.IOException;
 import java.util.Map.Entry;
@@ -82,7 +83,7 @@ public class FailureListener extends RunListener<Run<?, ?>> {
         }
     }
 
-    private static class LogToSlave implements Callable<Void, IOException> {
+    private static class LogToSlave extends MasterToSlaveCallable<Void, IOException> {
         private static final long serialVersionUID = 1L;
         private String message;
         public LogToSlave(String message) {
