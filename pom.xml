@@ -1,99 +1,104 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ ~ The MIT License
+ ~
+ ~ Copyright (c) 2014 Red Hat, Inc.
+ ~
+ ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+ ~ of this software and associated documentation files (the "Software"), to deal
+ ~ in the Software without restriction, including without limitation the rights
+ ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ ~ copies of the Software, and to permit persons to whom the Software is
+ ~ furnished to do so, subject to the following conditions:
+ ~
+ ~ The above copyright notice and this permission notice shall be included in
+ ~ all copies or substantial portions of the Software.
+ ~
+ ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
   <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <groupId>org.jenkins-ci.plugins</groupId>
     <artifactId>plugin</artifactId>
-    <version>2.19</version>
+    <version>6.2250.va_d01d559a_209</version>
+    <relativePath />
   </parent>
 
-  <groupId>org.jenkins-ci.plugins</groupId>
   <artifactId>adaptive-disconnector</artifactId>
-  <version>0.3-SNAPSHOT</version>
+  <version>${changelist}</version>
   <packaging>hpi</packaging>
+
   <name>Adaptive Disconnector Plugin</name>
   <description>Run node monitors after build failure to detect infrastructure problems early</description>
-  <url>http://wiki.jenkins-ci.org/display/JENKINS/Adaptive+Disconnector+Plugin</url>
+
+  <url>https://github.com/jenkinsci/adaptive-disconnector-plugin</url>
+
+  <licenses>
+    <license>
+      <name>MIT License</name>
+      <url>https://opensource.org/license/mit/</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
   <scm>
-    <connection>scm:git:git://github.com/jenkinsci/adaptive-disconnector-plugin.git</connection>
-    <developerConnection>scm:git:git@github.com:jenkinsci/adaptive-disconnector-plugin.git</developerConnection>
-    <url>https://github.com/jenkinsci/adaptive-disconnector-plugin</url>
+    <connection>scm:git:https://github.com/jenkinsci/${project.artifactId}-plugin.git</connection>
+    <developerConnection>scm:git:git@github.com:jenkinsci/${project.artifactId}-plugin.git</developerConnection>
     <tag>HEAD</tag>
+    <url>https://github.com/jenkinsci/adaptive-disconnector-plugin</url>
   </scm>
+
+  <properties>
+    <jenkins.baseline>2.555</jenkins.baseline>
+    <jenkins.version>${jenkins.baseline}.3</jenkins.version>
+
+    <spotless.check.skip>false</spotless.check.skip>
+    <ban-junit4-imports.skip>false</ban-junit4-imports.skip>
+    <ban-deprecated-stapler.skip>false</ban-deprecated-stapler.skip>
+    <ban-commons-lang-2.skip>false</ban-commons-lang-2.skip>
+    <hpi.strictBundledArtifacts>true</hpi.strictBundledArtifacts>
+    <banObsoleteDependencyOverrides.skip>false</banObsoleteDependencyOverrides.skip>
+
+    <changelist>999999-SNAPSHOT</changelist>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.jenkins.tools.bom</groupId>
+        <artifactId>bom-${jenkins.baseline}.x</artifactId>
+        <version>7280.ve2096dda_41b_9</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <dependencies>
     <dependency>
       <groupId>org.hamcrest</groupId>
       <artifactId>hamcrest-core</artifactId>
-      <version>1.2.1</version>
       <scope>test</scope>
-    </dependency>
-
-    <!-- Exclude sisu-guice we do not care for to make enforcer happy -->
-    <dependency>
-      <groupId>org.jenkins-ci.main</groupId>
-      <artifactId>jenkins-core</artifactId>
-      <version>${jenkins.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.sonatype.sisu</groupId>
-          <artifactId>sisu-guice</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
   </dependencies>
 
   <repositories>
     <repository>
       <id>repo.jenkins-ci.org</id>
-      <url>http://repo.jenkins-ci.org/public/</url>
+      <url>https://repo.jenkins-ci.org/public/</url>
     </repository>
   </repositories>
 
   <pluginRepositories>
     <pluginRepository>
       <id>repo.jenkins-ci.org</id>
-      <url>http://repo.jenkins-ci.org/public/</url>
+      <url>https://repo.jenkins-ci.org/public/</url>
     </pluginRepository>
   </pluginRepositories>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <surefire.useFile>false</surefire.useFile>
-    <jenkins.version>1.609</jenkins.version>
-    <jenkins-test-harness.version>2.17</jenkins-test-harness.version>
-    <java.level>6</java.level>
-    <findbugs.skip>true</findbugs.skip>
-  </properties>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.gmaven</groupId>
-        <artifactId>gmaven-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>generateStubs</goal>
-              <goal>compile</goal>
-              <goal>generateTestStubs</goal>
-              <goal>testCompile</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-           <!-- 1.8 not yet supported by plugin but 1.7 works
-                here so long as we provide explicit version -->
-           <providerSelection>1.7</providerSelection>
-        </configuration>
-        <dependencies>
-          <dependency>
-            <groupId>org.codehaus.gmaven.runtime</groupId>
-            <artifactId>gmaven-runtime-1.7</artifactId>
-            <version>1.3</version>
-          </dependency>
-        </dependencies>
-      </plugin>
-    </plugins>
-  </build>
 </project>
