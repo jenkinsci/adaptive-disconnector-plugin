@@ -1,7 +1,8 @@
 /.*
 !.gitignore
 !/.github/
-!/.github/**
+!/.github/CODEOWNERS
+!.gitignore
 
 /work
 /target
