@@ -2,7 +2,9 @@
 !.gitignore
 !/.github/
 !/.github/CODEOWNERS
-!.gitignore
+!/.mvn/
+!/.mvn/extensions.xml
+!/.mvn/maven.config
 
 /work
 /target
