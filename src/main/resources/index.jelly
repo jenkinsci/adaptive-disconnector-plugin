@@ -1,0 +1,5 @@
+<?jelly escape-by-default='true'?>
+<div>
+    Adaptive Disconnector is a Jenkins plugin that automatically
+    disconnects agents when node monitoring detects failures.
+</div>
